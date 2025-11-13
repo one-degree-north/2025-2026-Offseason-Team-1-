@@ -35,12 +35,18 @@ private static final IntakeStates INTAKE = null;
   private static TalonFX m_intake2;
   private VelocityVoltage velocityControl = new VelocityVoltage(0).withSlot(0);
 
+// Beam break sensor (Digital Input)
+  private DigitalInput beamBreak;
+
+
   //Hardware
   public OffseasonIntake() {
         setName("OffseasonIntake");
         m_intake1 = new TalonFX(m_intake1_ID, "rio");
         m_intake2 = new TalonFX(m_intake2_ID, "rio");
+        beamBreak = new DigitalInput(0); //put acc roborio doi thingy here instead of 0
         configureTalonFX();
+  
       }
     
     
@@ -80,6 +86,10 @@ private static final IntakeStates INTAKE = null;
 
       case INTAKE:
       //Run intake motors
+      if (isBeamBroken()) {
+        // Stop intake when piece detected
+        setVoltage(0);
+      }
        setVoltage(3);
        break;
      case OUTTAKE:
@@ -197,11 +207,9 @@ private static final IntakeStates INTAKE = null;
     this.velocityControl = velocityControl;
     }
 
+    public boolean isBeamBroken() {
+      return !beamBreak.get(); // return true if object is detected
+    }
+
     
   }
-
-
-
-
-
-
