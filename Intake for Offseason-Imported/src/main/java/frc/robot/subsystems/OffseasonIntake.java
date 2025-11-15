@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -127,6 +128,13 @@ private static final IntakeStates INTAKE = null;
                 
       return false; 
         }
+
+ private void setTargetRPM(double targetOutputRPM) {
+    double gearRatio = 5.0 / 4.0;  
+    double motorRPM = targetOutputRPM / gearRatio;
+    double motorRPS = motorRPM / 60;  // TalonFX uses RPS
+    m_intake1.setControl(velocityControl.withVelocity(motorRPS));
+        
   private IntakeStates getDesiredState() {
                 
       throw new UnsupportedOperationException("Unimplemented method 'getDesiredState'");
